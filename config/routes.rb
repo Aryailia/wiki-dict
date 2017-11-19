@@ -5,9 +5,10 @@ Rails.application.routes.draw do
   post '/login' => 'sessions#create'
   delete '/logout' => 'sessions#destroy'
 
-  get '/sign_up' => 'users#new', as: 'sign_up'
   
-  resources :users, ezcept: [:new]
+  resources :users#, except: [:new]
+  get '/sign_up' => 'users#new', as: 'sign_up'
+ 
   resources :examples
   resources :senses
   resources :lexemes

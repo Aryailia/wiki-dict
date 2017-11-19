@@ -1,9 +1,41 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Head:</strong>
-  <%= @lexeme.head %>
-</p>
+<% showId = "show#{@lexeme.id}" %>
+<% editId = "edit#{@lexeme.id}" %>
 
-<%= link_to 'Edit', edit_lexeme_path(@lexeme) %> |
+<div id="<%= showId %>" class="show">
+  <strong>Word:</strong>
+  <%= @lexeme.headword %>
+  <%= link_to('Edit', '#', id: :edit, onclick: "ajaxEdit('#{lexeme_path(@lexeme)}.json', #{@lexeme.id})") %>
+</div>
+<div id="<%= editId %>" class="edit">
+  <%= form_with(model: @lexeme, method: :put) do |form| %>
+
+    <div class="field">
+      <strong>Word:</strong>
+      <%= form.text_field :headword, value: @lexeme.headword, id: "lexeme_headword#{@lexeme.id}" %>
+    </div>
+
+    <div class="actions">
+      <%= form.submit 'Save' %>
+    </div>
+  <% end %>
+</div>
+
 <%= link_to 'Back', lexemes_path %>
+
+<script>
+/*
+  (function () {
+    'use strict';
+
+    var obj = document.getElementById('edit');
+    obj.addEventListener('click', function () {
+      apiRequest('<%= "#{lexeme_path(@lexeme)}.json" %>').then(function (resp) {
+        document.getElementById('<%= showId %>').style.display = 'none';
+        document.getElementById('<%= editId %>').style.display = 'block';
+      });
+      
+    });
+  })();*/
+</script>

@@ -1,6 +1,7 @@
 class LexemesController < ApplicationController
   before_action :set_lexeme, only: [:show, :edit, :update, :destroy]
-
+  before_action :require_login, only: [:new, :create, :edit, :update, :destroy]
+  
   # GET /lexemes
   # GET /lexemes.json
   def index
@@ -69,6 +70,16 @@ class LexemesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def lexeme_params
-      params.require(:lexeme).permit(:head)
+      params.require(:lexeme).permit(:headword)
+    end
+
+    def require_login
+      if !signed_in?
+        msg = 'You must be logged in to perform this action'
+        respond_to do |format|
+          format.html { redirect_to(root_path, notice: msg) }
+          format.json { render(errors: msg, status: :unprocessable_entity) }
+        end
+      end
     end
 end

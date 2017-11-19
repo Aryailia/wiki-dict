@@ -24,7 +24,7 @@ ActiveRecord::Schema.define(version: 20171119163003) do
   end
 
   create_table "lexemes", force: :cascade do |t|
-    t.string "head"
+    t.string "headword"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
