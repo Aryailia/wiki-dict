@@ -12,6 +12,7 @@ Rails.application.routes.draw do
  
   resources :lexemes
   get '/search' => 'lexemes#search', as: 'search'
+  get '/tts/:lang/:query_string/' => 'lexemes#tts', as: 'tts'
   
   resources :senses, only: [:create, :update, :destroy]
   patch '/approve/:id' => 'senses#approve', as: 'approve'

@@ -2,6 +2,20 @@ class LexemesController < ApplicationController
   before_action :set_lexeme, only: [:show, :edit, :update, :destroy]
   before_action :require_login, only: [:new, :create, :edit, :update, :destroy]
   
+  # Source: https://gist.github.com/rewonc/0024ec71bb589be18bd7
+  # Pipes to Google Translate's Text-To-Speech service
+  def tts
+    queryString = params[:query_string] #.gsub(. . ., '')
+    lang = params[:lang] #Language code; see https://sites.google.com/site/tomihasa/google-language-codes
+    require 'net/http'
+    url = URI.parse('http://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=' + lang + '&q=' + URI::encode(queryString))
+    req = Net::HTTP::Get.new(url.to_s)
+    res = Net::HTTP.start(url.host, url.port) {|http|
+      http.request(req)
+    }
+    send_data(res.body, :disposition => "inline", :filename => "sound.mp3", :type => "audio/mpeg")
+  end
+
   # GET /lexemes
   # GET /lexemes.json
   def index
@@ -10,9 +24,9 @@ class LexemesController < ApplicationController
 
   def search
     fuzzyQuery = "%#{params[:q].split('').join('%')}%"
-    @lexemes = Lexeme.where(
-      'headword LIKE ?',
-      fuzzyQuery)
+    @lexemes = Lexeme.join(:senses).where('headword LIKE ? OR content LIKE ?',
+      fuzzyQuery, fuzzyQuery)
+    
     respond_to do |format|
       format.html { render(:index) }
     end

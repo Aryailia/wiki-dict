@@ -6,6 +6,8 @@
 <div id="<%= showId %>" class="show">
   <div>
     <strong><%= @lexeme.headword %></strong>
+    <% uriencoded = URI.escape(@lexeme.headword, Regexp.new("[^#{URI::PATTERN::UNRESERVED}]")) %>
+    <audio src="<%= "/tts/en/#{uriencoded}" %>" controls></audio>
     <%= link_to('Edit', '#', id: :edit, onclick: "ajaxEdit('#{lexeme_path(@lexeme)}.json', #{@lexeme.id})") %>
   </div>
   <div>
