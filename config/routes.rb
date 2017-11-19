@@ -10,7 +10,9 @@ Rails.application.routes.draw do
   get '/sign_up' => 'users#new', as: 'sign_up'
  
   resources :examples
-  resources :senses
+  resources :senses, only: [:create, :update, :destroy]
   resources :lexemes
+
+  get '/search' => 'lexemes#search', as: 'search'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

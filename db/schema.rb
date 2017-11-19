@@ -16,7 +16,7 @@ ActiveRecord::Schema.define(version: 20171119163003) do
   enable_extension "plpgsql"
 
   create_table "examples", force: :cascade do |t|
-    t.string "content"
+    t.string "content", null: false
     t.bigint "sense_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -24,14 +24,15 @@ ActiveRecord::Schema.define(version: 20171119163003) do
   end
 
   create_table "lexemes", force: :cascade do |t|
-    t.string "headword"
+    t.string "headword", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   create_table "senses", force: :cascade do |t|
-    t.integer "type"
-    t.string "content"
+    t.integer "type", null: false
+    t.string "content", null: false
+    t.boolean "approve", null: false
     t.bigint "lexeme_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -39,8 +40,9 @@ ActiveRecord::Schema.define(version: 20171119163003) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "email"
-    t.string "password_digest"
+    t.string "email", null: false
+    t.string "password_digest", null: false
+    t.integer "level", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

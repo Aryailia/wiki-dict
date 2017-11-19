@@ -1,7 +1,7 @@
 class CreateExamples < ActiveRecord::Migration[5.1]
   def change
     create_table :examples do |t|
-      t.string :content
+      t.string :content, null: false
       t.references :sense, foreign_key: true
 
       t.timestamps

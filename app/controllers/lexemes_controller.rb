@@ -8,6 +8,16 @@ class LexemesController < ApplicationController
     @lexemes = Lexeme.all
   end
 
+  def search
+    fuzzyQuery = "%#{params[:q].split('').join('%')}%"
+    @lexemes = Lexeme.where(
+      'headword LIKE ?',
+      fuzzyQuery)
+    respond_to do |format|
+      format.html { render(:index) }
+    end
+  end
+
   # GET /lexemes/1
   # GET /lexemes/1.json
   def show

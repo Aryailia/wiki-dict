@@ -11,14 +11,26 @@
   <body>
     <header>
       <nav>
-        <% if !signed_in? && !current_page?(login_path) %>
-          <%= button_to('Login', login_path, method: 'get') %>
-        <% else %>
-          <%= button_to('Logout', logout_path, method: 'delete') %>
-        <% end %>
-        <% if !current_page?(sign_up_path) %>
-          <%= button_to('Sign Up', sign_up_path, method: 'get') %>
-        <% end %>
+        <div class="item"><%= button_to('Word List', lexemes_path, method: :get) %>
+        <div class="item"><%= button_to('User List', users_path, method: :get) %>
+        <div class="item">
+          <%= form_with(url: search_path, local: true, method: :get) do |form| %>
+            <%= form.text_field :q %>
+            <%= form.submit 'Search' %>
+          <% end %>
+        </div>
+        <div class="item">
+          <% if !signed_in? %>
+            <% if !current_page?(login_path) %>
+              <%= button_to('Login', login_path, method: 'get') %>
+            <% end %>
+            <% if !current_page?(sign_up_path) %>
+              <%= button_to('Sign Up', sign_up_path, method: 'get') %>
+            <% end %>
+          <% else %>
+            <%= button_to('Logout', logout_path, method: 'delete') %>
+          <% end %>
+        </div>
       </nav>
     </header>
 

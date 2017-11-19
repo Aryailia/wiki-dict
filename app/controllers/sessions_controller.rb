@@ -17,12 +17,13 @@ class SessionsController < ApplicationController
         if signed_in?
           format.html { redirect_to(root_path, notice: 'Cannot login while already logged in.') }
           format.json { render(errors: 'Cannot login while already logged in', status: :unprocessable_entity) }
-        elsif user.authenticate(params[:password])
+        elsif !user.nil? && user.authenticate(params[:password])
           sign_in(user[:id])
-          format.html { redirect_to root_path, notice: 'session was successfully created.' }
+          format.html { redirect_to(root_path, notice: 'session was successfully created.') }
           format.json { render :show, status: :created, location: @session }
         else
-          format.html { render :new }
+
+          format.html { redirect_to(login_path, notice: 'Invalid login.') }
           format.json { render json: @session.errors, status: :unprocessable_entity }
         end
       end
