@@ -25,7 +25,7 @@ class LexemesController < ApplicationController
   def search
     fuzzyQuery = "%#{params[:q].split('').join('%')}%"
     @lexemes = Lexeme.join(:senses).where('headword LIKE ? OR content LIKE ?',
-      fuzzyQuery, fuzzyQuery)
+      fuzzyQuery, fuzzyQuery).distinct
     
     respond_to do |format|
       format.html { render(:index) }
