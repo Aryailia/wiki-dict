@@ -1,6 +1,12 @@
 class SessionsController < ApplicationController
     # GET /sessions/new
     def new
+      if signed_in?
+        respond_to do |format|
+          format.html { redirect_to(root_path, notice: 'Cannot login while already logged in.') }
+          format.json { render(errors: 'Cannot login while already logged in', status: :unprocessable_entity) }
+        end
+      end
     end
   
     # POST /sessions
@@ -8,7 +14,10 @@ class SessionsController < ApplicationController
     def create
       user = User.find_by(email: params[:email])
       respond_to do |format|
-        if true#User.authenticate(params[:password])
+        if signed_in?
+          format.html { redirect_to(root_path, notice: 'Cannot login while already logged in.') }
+          format.json { render(errors: 'Cannot login while already logged in', status: :unprocessable_entity) }
+        elsif user.authenticate(params[:password])
           sign_in(user[:id])
           format.html { redirect_to root_path, notice: 'session was successfully created.' }
           format.json { render :show, status: :created, location: @session }
