@@ -1,0 +1,32 @@
+<%= form_with(model: sense, local: true) do |form| %>
+  <% if sense.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(sense.errors.count, "error") %> prohibited this sense from being saved:</h2>
+
+      <ul>
+      <% sense.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :type %>
+    <%= form.number_field :type, id: :sense_type %>
+  </div>
+
+  <div class="field">
+    <%= form.label :content %>
+    <%= form.text_field :content, id: :sense_content %>
+  </div>
+
+  <div class="field">
+    <%= form.label :lexeme_id %>
+    <%= form.text_field :lexeme_id, id: :sense_lexeme_id %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

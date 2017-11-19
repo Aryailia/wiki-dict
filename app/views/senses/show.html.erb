@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Type:</strong>
+  <%= @sense.type %>
+</p>
+
+<p>
+  <strong>Content:</strong>
+  <%= @sense.content %>
+</p>
+
+<p>
+  <strong>Lexeme:</strong>
+  <%= @sense.lexeme %>
+</p>
+
+<%= link_to 'Edit', edit_sense_path(@sense) %> |
+<%= link_to 'Back', senses_path %>

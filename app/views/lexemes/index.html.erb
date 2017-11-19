@@ -1,0 +1,27 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Lexemes</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Head</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @lexemes.each do |lexeme| %>
+      <tr>
+        <td><%= lexeme.head %></td>
+        <td><%= link_to 'Show', lexeme %></td>
+        <td><%= link_to 'Edit', edit_lexeme_path(lexeme) %></td>
+        <td><%= link_to 'Destroy', lexeme, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Lexeme', new_lexeme_path %>
