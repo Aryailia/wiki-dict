@@ -30,9 +30,9 @@ ActiveRecord::Schema.define(version: 20171119163003) do
   end
 
   create_table "senses", force: :cascade do |t|
-    t.integer "type", null: false
+    t.integer "word_class", null: false
     t.string "content", null: false
-    t.boolean "approve", null: false
+    t.boolean "approve", default: false, null: false
     t.bigint "lexeme_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

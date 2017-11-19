@@ -82,14 +82,4 @@ class LexemesController < ApplicationController
     def lexeme_params
       params.require(:lexeme).permit(:headword)
     end
-
-    def require_login
-      if !signed_in?
-        msg = 'You must be logged in to perform this action'
-        respond_to do |format|
-          format.html { redirect_to(root_path, notice: msg) }
-          format.json { render(errors: msg, status: :unprocessable_entity) }
-        end
-      end
-    end
 end

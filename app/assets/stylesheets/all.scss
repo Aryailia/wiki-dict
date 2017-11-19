@@ -8,3 +8,11 @@
 
 .show {
 }
+
+nav {
+  background-color: lightblue;
+  padding: 20px;
+  * {
+    display: inline-block;
+  }
+}

@@ -4,9 +4,46 @@
 <% editId = "edit#{@lexeme.id}" %>
 
 <div id="<%= showId %>" class="show">
-  <strong>Word:</strong>
-  <%= @lexeme.headword %>
-  <%= link_to('Edit', '#', id: :edit, onclick: "ajaxEdit('#{lexeme_path(@lexeme)}.json', #{@lexeme.id})") %>
+  <div>
+    <strong><%= @lexeme.headword %></strong>
+    <%= link_to('Edit', '#', id: :edit, onclick: "ajaxEdit('#{lexeme_path(@lexeme)}.json', #{@lexeme.id})") %>
+  </div>
+  <div>
+    <ol>
+      <% @lexeme.senses.select { |sense| sense.approve }.each do |sense| %>
+        <li><%= sense.content %></li>
+      <% end %>
+    </ol>
+    <strong>Pending:</strong>
+    <ol>
+      <% @lexeme.senses.select { |sense| !sense.approve }.each do |sense| %>
+        <li>
+          <%= sense.content -%>
+          <% if current_user.admin? -%>
+            <%= button_to('Approve', approve_path(sense.id), method: :patch) %>
+          <% end -%>
+        </li>
+      <% end %>
+    </ol>
+
+    <%# Add a new sense %>
+    <%= form_with(model: Sense.new) do |form| %>
+      <%= form.select(:word_class, options_for_select([
+        ['Noun', 0],
+        ['Verb', 1],
+        ['Adjective', 2],
+        ['Adverb', 3],
+        ['Particle', 4],
+        ['Expression', 5],
+      ])) %>
+ 
+      <%= form.text_field :content, id: :sense_content %>
+      <%= form.hidden_field(:lexeme_id, value: @lexeme.id) %>
+
+      <%= form.submit 'Add meaning' %>
+    <% end %>
+    
+  </div>
 </div>
 <div id="<%= editId %>" class="edit">
   <%= form_with(model: @lexeme, method: :put) do |form| %>

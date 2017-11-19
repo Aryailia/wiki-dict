@@ -19,6 +19,15 @@
             <%= form.submit 'Search' %>
           <% end %>
         </div>
+
+        <%# Promote user if only user available %>
+        <% if User.count == 1 %>
+          <div class="item">
+            <%= button_to('Become Admin!', promote_path(current_user.id), method: :patch) %>
+          </div>
+        <% end %>
+
+        <%# Button for session and user management %>
         <div class="item">
           <% if !signed_in? %>
             <% if !current_page?(login_path) %>

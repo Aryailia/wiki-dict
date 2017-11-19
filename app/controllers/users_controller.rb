@@ -1,6 +1,8 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
-
+  before_action :require_login, only: [:edit, :update, :destroy, :promote]
+  before_action :require_admin, only: [:edit, :update, :destroy]
+  
   # GET /users
   # GET /users.json
   def index
@@ -48,6 +50,27 @@ class UsersController < ApplicationController
       else
         format.html { render :edit }
         format.json { render json: @user.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def promote
+    respond_to do |format|
+      begin
+        # Allow first user to become admin
+        raise('You cannot do this unless you are an admin') if signed_in? && !current_user.admin? && @user.count > 1
+        
+        @user = User.find_by(id: params[:id])
+        raise('No such user') if @user.nil? 
+        raise('Already admin') if @user.admin? 
+        raise(@user.errors) if @user.admin!
+        
+
+        format.html { redirect_to(@user, notice: 'User was successfully updated.') }
+        format.json { render(:show, status: :ok, location: @user) }
+      rescue Exception => err
+        format.html { redirect_to(root_path, notice: err.message) }
+        format.json { render(json: err.message, status: :unprocessable_entity) }
       end
     end
   end
