@@ -17,7 +17,6 @@ Rails.application.routes.draw do
   resources :senses, only: [:create, :update, :destroy]
   patch '/approve/:id' => 'senses#approve', as: 'approve'
   
-  resources :examples
   
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
