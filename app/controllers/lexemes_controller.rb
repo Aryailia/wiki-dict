@@ -23,9 +23,11 @@ class LexemesController < ApplicationController
   end
 
   def search
-    fuzzyQuery = "%#{params[:q].split('').join('%')}%"
-    @lexemes = Lexeme.join(:senses).where('headword LIKE ? OR content LIKE ?',
-      fuzzyQuery, fuzzyQuery).distinct
+    fuzzyQuery = "%#{params[:q].downcase.split('').join('%')}%"
+    @lexemes = Lexeme
+      .joins('LEFT JOIN senses ON lexemes.id = senses.id')
+      .where('LOWER(headword) LIKE ? OR LOWER(content) LIKE ?', fuzzyQuery, fuzzyQuery)
+      .distinct
     
     respond_to do |format|
       format.html { render(:index) }
