@@ -21,7 +21,7 @@
         </div>
 
         <%# Promote user if only user available %>
-        <% if User.count == 1 %>
+        <% if signed_in? && User.count == 1 && !current_user.admin? %>
           <div class="item">
             <%= button_to('Become Admin!', promote_path(current_user.id), method: :patch) %>
           </div>
