@@ -58,12 +58,12 @@ class UsersController < ApplicationController
     respond_to do |format|
       begin
         # Allow first user to become admin
-        raise('You cannot do this unless you are an admin') if signed_in? && !current_user.admin? && @user.count > 1
+        raise('You cannot do this unless you are an admin') if signed_in? && !current_user.admin? && User.count > 1
         
         @user = User.find_by(id: params[:id])
         raise('No such user') if @user.nil? 
-        raise('Already admin') if @user.admin? 
-        raise(@user.errors) if @user.admin!
+        raise('Already admin') if @user.admin?
+        raise(@user.errors) if !@user.admin!
         
 
         format.html { redirect_to(@user, notice: 'User was successfully updated.') }

@@ -16,28 +16,25 @@
         <li><%= sense.content %></li>
       <% end %>
     </ol>
-    <strong>Pending:</strong>
-    <ol>
-      <% @lexeme.senses.select { |sense| !sense.approve }.each do |sense| %>
-        <li>
-          <%= sense.content -%>
-          <% if current_user.admin? -%>
-            <%= button_to('Approve', approve_path(sense.id), method: :patch) %>
-          <% end -%>
-        </li>
-      <% end %>
-    </ol>
+
+    <div class="pending">
+      <strong>Pending:</strong>
+      <ol>
+        <% @lexeme.senses.select { |sense| !sense.approve }.each do |sense| %>
+          <li>
+            <%= sense.content -%>
+            <% if current_user.admin? -%>
+              <%= button_to('Approve', approve_path(sense.id), method: :patch) %>
+            <% end -%>
+          </li>
+        <% end %>
+      </ol>
+    </div>
 
     <%# Add a new sense %>
+    <% options =  %>
     <%= form_with(model: Sense.new) do |form| %>
-      <%= form.select(:word_class, options_for_select([
-        ['Noun', 0],
-        ['Verb', 1],
-        ['Adjective', 2],
-        ['Adverb', 3],
-        ['Particle', 4],
-        ['Expression', 5],
-      ])) %>
+      <%= form.select(:word_class, options_for_select(Lexeme::WORD_CLASS_PAIRS)) %>
  
       <%= form.text_field :content, id: :sense_content %>
       <%= form.hidden_field(:lexeme_id, value: @lexeme.id) %>

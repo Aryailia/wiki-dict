@@ -26,7 +26,7 @@ module ApplicationHelper
   end
   
   def require_admin
-    if !signed_in? && current_user.admin?
+    if current_user.nil? || !current_user.admin?
       msg = 'You must be an admin to perform this action'
       respond_to do |format|
         format.html { redirect_to(root_path, notice: msg) }
