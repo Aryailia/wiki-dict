@@ -6,12 +6,12 @@ RSpec.describe User, type: :model do
   end
 
   describe('Password working') do
-    it { expect(@user.authenticate(@user.password)).to(eq(true)) }
+    it { expect(@user.authenticate(@user.password).password_digest).to(eq(@user.password_digest)) }
   end
 
   describe('validation') do
-		# it { is_expected.to(validate_presence_of(:email)) }
-		# it { is_expected.to(validate_presence_of(:password_digest)) }
+		it { is_expected.to(validate_presence_of(:email)) }
+		it { is_expected.to(validate_presence_of(:password_digest)) }
     describe('uniqueness') do
       before do
         @user.dup.save
