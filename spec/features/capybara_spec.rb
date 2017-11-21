@@ -15,5 +15,23 @@ RSpec.feature("Routes", type: :feature) do
   		click_button('Login')
   		expect(page).to(have_content "New Lexeme")
   	end
-  end
+	end
+	
+	describe('search') do
+
+
+		before do
+			@lexeme = Lexeme.create!(headword: 'hello')
+			@sense = @lexeme.senses.create!(word_class: 1, content: 'travesty', approve: false)
+		end
+
+		it('') do
+			visit('/')
+  		within('form[action="/search"]') do
+  			find('input[name="q"]').set('eo')
+			end
+			click_button('Fuzzy Search')
+			expect(page).to(have_content "hello")
+		end
+	end
 end

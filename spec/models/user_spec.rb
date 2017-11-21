@@ -12,12 +12,14 @@ RSpec.describe User, type: :model do
   describe('validation') do
 		it { is_expected.to(validate_presence_of(:email)) }
 		it { is_expected.to(validate_presence_of(:password_digest)) }
-    describe('uniqueness') do
-      before do
-        @user.dup.save
-      end
-			it { should_not(be_valid) }
-    end
+		it { is_expected.to(validate_presence_of(:level)) }
+		it { is_expected.to(validate_uniqueness_of(:email)) }
+    # describe('uniqueness') do
+    #   before do
+    #     @user.dup.save
+    #   end
+		# 	it { should_not(be_valid) }
+    # end
   end
 
   describe 'association' do
