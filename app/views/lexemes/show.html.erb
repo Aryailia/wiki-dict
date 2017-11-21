@@ -13,7 +13,10 @@
   <div>
     <ol>
       <% @lexeme.senses.select { |sense| sense.approve }.each do |sense| %>
-        <li><%= sense.content %></li>
+        <li>
+          <strong><%= Lexeme::WORD_CLASSES[sense.word_class] %></strong>
+          <%= sense.content %>
+        </li>
       <% end %>
     </ol>
 
@@ -22,8 +25,9 @@
       <ol>
         <% @lexeme.senses.select { |sense| !sense.approve }.each do |sense| %>
           <li>
+            <strong><%= Lexeme::WORD_CLASSES[sense.word_class] %></strong>
             <%= sense.content -%>
-            <% if current_user.admin? -%>
+            <% if !current_user.nil? && current_user.admin? -%>
               <%= button_to('Approve', approve_path(sense.id), method: :patch) %>
             <% end -%>
           </li>
