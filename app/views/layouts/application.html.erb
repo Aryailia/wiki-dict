@@ -11,8 +11,9 @@
   <body>
     <header>
       <nav>
-        <div class="item"><%= button_to('Word List', lexemes_path, method: :get) %>
-        <div class="item"><%= button_to('User List', users_path, method: :get) %>
+        <div class="item"><strong>Dictionary</strong></div>
+        <div class="item"><%= button_to('Word List', lexemes_path, method: :get) %></div>
+        <div class="item"><%= button_to('User List', users_path, method: :get) %></div>
         <div class="item">
           <%= form_with(url: search_path, local: true, method: :get) do |form| %>
             <%= form.text_field :q %>
@@ -21,7 +22,7 @@
         </div>
 
         <%# Promote user if only user available %>
-        <% if signed_in? && User.count == 1 && !current_user.admin? %>
+        <% if signed_in? && User.count == 1 && !current_user.nil? && !current_user.admin? %>
           <div class="item">
             <%= button_to('Become Admin!', promote_path(current_user.id), method: :patch) %>
           </div>
